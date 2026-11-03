@@ -1,0 +1,43 @@
+// Pre-cached coordinates and popular route presets for instant responsiveness
+export const POPULAR_ROUTES = [
+  { from: 'New York, NY', to: 'Boston, MA', label: 'New York ➔ Boston', distanceMiles: 215, hours: 3.8 },
+  { from: 'Los Angeles, CA', to: 'San Francisco, CA', label: 'Los Angeles ➔ San Francisco', distanceMiles: 382, hours: 5.9 },
+  { from: 'Chicago, IL', to: 'Detroit, MI', label: 'Chicago ➔ Detroit', distanceMiles: 283, hours: 4.4 },
+  { from: 'Dallas, TX', to: 'Houston, TX', label: 'Dallas ➔ Houston', distanceMiles: 239, hours: 3.6 },
+  { from: 'Seattle, WA', to: 'Portland, OR', label: 'Seattle ➔ Portland', distanceMiles: 174, hours: 2.9 },
+  { from: 'Miami, FL', to: 'Orlando, FL', label: 'Miami ➔ Orlando', distanceMiles: 235, hours: 3.5 },
+  { from: 'Las Vegas, NV', to: 'Los Angeles, CA', label: 'Las Vegas ➔ Los Angeles', distanceMiles: 270, hours: 4.2 },
+  { from: 'London, UK', to: 'Manchester, UK', label: 'London ➔ Manchester', distanceMiles: 208, hours: 4.0 },
+  { from: 'Toronto, ON', to: 'Montreal, QC', label: 'Toronto ➔ Montreal', distanceMiles: 337, hours: 5.5 },
+  { from: 'Sydney, AU', to: 'Melbourne, AU', label: 'Sydney ➔ Melbourne', distanceMiles: 545, hours: 8.8 },
+];
+
+export const CITY_COORDINATES = {
+  'New York, NY': { lat: 40.7128, lng: -74.0060, name: 'New York, NY' },
+  'Boston, MA': { lat: 42.3601, lng: -71.0589, name: 'Boston, MA' },
+  'Los Angeles, CA': { lat: 34.0522, lng: -118.2437, name: 'Los Angeles, CA' },
+  'San Francisco, CA': { lat: 37.7749, lng: -122.4194, name: 'San Francisco, CA' },
+  'Chicago, IL': { lat: 41.8781, lng: -87.6298, name: 'Chicago, IL' },
+  'Detroit, MI': { lat: 42.3314, lng: -83.0458, name: 'Detroit, MI' },
+  'Dallas, TX': { lat: 32.7767, lng: -96.7970, name: 'Dallas, TX' },
+  'Houston, TX': { lat: 29.7604, lng: -95.3698, name: 'Houston, TX' },
+  'Seattle, WA': { lat: 47.6062, lng: -122.3321, name: 'Seattle, WA' },
+  'Portland, OR': { lat: 45.5152, lng: -122.6784, name: 'Portland, OR' },
+  'Miami, FL': { lat: 25.7617, lng: -80.1918, name: 'Miami, FL' },
+  'Orlando, FL': { lat: 28.5383, lng: -81.3792, name: 'Orlando, FL' },
+  'Las Vegas, NV': { lat: 36.1699, lng: -115.1398, name: 'Las Vegas, NV' },
+  'Philadelphia, PA': { lat: 39.9526, lng: -75.1652, name: 'Philadelphia, PA' },
+  'Washington, DC': { lat: 38.9072, lng: -77.0369, name: 'Washington, DC' },
+  'Atlanta, GA': { lat: 33.7490, lng: -84.3880, name: 'Atlanta, GA' },
+  'Denver, CO': { lat: 39.7392, lng: -104.9903, name: 'Denver, CO' },
+  'Phoenix, AZ': { lat: 33.4484, lng: -112.0740, name: 'Phoenix, AZ' },
+  'Austin, TX': { lat: 30.2672, lng: -97.7431, name: 'Austin, TX' },
+  'San Diego, CA': { lat: 32.7157, lng: -117.1611, name: 'San Diego, CA' },
+  'London, UK': { lat: 51.5074, lng: -0.1278, name: 'London, UK' },
+  'Manchester, UK': { lat: 53.4808, lng: -2.2426, name: 'Manchester, UK' },
+  'Toronto, ON': { lat: 43.6532, lng: -79.3832, name: 'Toronto, ON' },
+  'Montreal, QC': { lat: 45.5017, lng: -73.5673, name: 'Montreal, QC' },
+  'Paris, France': { lat: 48.8566, lng: 2.3522, name: 'Paris, France' },
+  'Berlin, Germany': { lat: 52.5200, lng: 13.4050, name: 'Berlin, Germany' },
+};
+

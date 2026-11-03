@@ -34,6 +34,7 @@ export const TRANSLATIONS = {
       convert: 'Unit Converter',
       faqs: 'FAQs & Guide',
       sitemap: 'Language Index',
+      authority: 'Knowledge Hub',
     },
     common: {
       calculate: 'Calculate',
@@ -134,6 +135,7 @@ export const TRANSLATIONS = {
       convert: 'Convertidor',
       faqs: 'Preguntas y Guía',
       sitemap: 'Índice de Idiomas',
+      authority: 'Centro de Conocimiento',
     },
     common: {
       calculate: 'Calcular',
@@ -234,6 +236,7 @@ export const TRANSLATIONS = {
       convert: 'Convertisseur',
       faqs: 'Questions & Guide',
       sitemap: 'Index des Langues',
+      authority: 'Piliers & Savoir',
     },
     common: {
       calculate: 'Calculer',

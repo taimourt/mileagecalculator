@@ -12,15 +12,18 @@ import EvVsGasCalculator from './components/EvVsGasCalculator';
 import MileageConverter from './components/MileageConverter';
 import FaqKnowledgeBase from './components/FaqKnowledgeBase';
 import LanguageSitemapDirectory from './components/LanguageSitemapDirectory';
+import TopicalAuthorityHub from './components/TopicalAuthorityHub';
+import SemanticBreadcrumbs from './components/SemanticBreadcrumbs';
 import FormulaGuide from './components/FormulaGuide';
 import CalculationHistory from './components/CalculationHistory';
 import Footer from './components/Footer';
 import { LANGUAGES, TRANSLATIONS } from './i18n/translations';
+import { injectSemanticJsonLd } from './utils/semanticSchema';
 
 // Parser to extract language and page from URL path or hash
 function parseUrlRoute() {
   const validLangs = LANGUAGES.map((l) => l.code);
-  const validTabs = ['route', 'measure', 'mileage', 'trip', 'irs', 'ifta', 'lease', 'air', 'ev', 'convert', 'faqs', 'sitemap'];
+  const validTabs = ['route', 'measure', 'mileage', 'trip', 'irs', 'ifta', 'lease', 'air', 'ev', 'convert', 'faqs', 'sitemap', 'authority'];
 
   // 1. Check Hash: e.g. #/es/mileage or #/mileage or #es/mileage
   const rawHash = window.location.hash.replace(/^#\/?/, '');
@@ -163,7 +166,8 @@ export default function App() {
     xDefault.rel = 'alternate';
     xDefault.hreflang = 'x-default';
     xDefault.href = `${baseUrl}/#/en/${activeTab}`;
-    document.head.appendChild(xDefault);
+    // Inject Dynamic Schema.org JSON-LD Graph for Topical Authority
+    injectSemanticJsonLd(currentLang, activeTab);
   }, [currentLang, activeTab]);
 
   // Apply dark mode
@@ -242,6 +246,13 @@ export default function App() {
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12">
+        {/* Semantic Breadcrumbs with Schema.org Microdata */}
+        <SemanticBreadcrumbs
+          currentLang={currentLang}
+          activeTab={activeTab}
+          onNavigate={(lang, tab) => updateRoute(lang, tab)}
+        />
+
         {/* Tab 1: Driving Route & Distance Calculator */}
         {activeTab === 'route' && (
           <RouteDistanceCalculator
@@ -326,7 +337,14 @@ export default function App() {
           <FaqKnowledgeBase />
         )}
 
-        {/* Tab 12: Multilingual Sitemap & Indexable Page Directory (121 URLs) */}
+        {/* Tab 12: Topical Authority & Semantic Knowledge Hub */}
+        {activeTab === 'authority' && (
+          <TopicalAuthorityHub
+            onNavigateTab={(tab) => updateRoute(currentLang, tab)}
+          />
+        )}
+
+        {/* Tab 13: Multilingual Sitemap & Indexable Page Directory (121 URLs) */}
         {activeTab === 'sitemap' && (
           <LanguageSitemapDirectory
             onNavigate={(lang, tab) => updateRoute(lang, tab)}

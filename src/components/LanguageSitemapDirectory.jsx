@@ -15,6 +15,7 @@ export default function LanguageSitemapDirectory({ onNavigate }) {
     { id: 'ev', name: 'EV vs Gas Savings' },
     { id: 'convert', name: 'Mileage Unit Converter' },
     { id: 'faqs', name: 'FAQs & Mileage Guide' },
+    { id: 'authority', name: 'Topical Authority Knowledge Hub' },
   ];
 
   const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://mileagecalculator.pro';

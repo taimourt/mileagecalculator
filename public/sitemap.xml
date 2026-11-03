@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Core Pillars -->
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/route</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://mileagecalculator.pro/#/en/route"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://mileagecalculator.pro/#/es/route"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://mileagecalculator.pro/#/fr/route"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://mileagecalculator.pro/#/de/route"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://mileagecalculator.pro/#/it/route"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://mileagecalculator.pro/#/pt/route"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mileagecalculator.pro/#/ru/route"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://mileagecalculator.pro/#/zh/route"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://mileagecalculator.pro/#/ja/route"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://mileagecalculator.pro/#/ar/route"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://mileagecalculator.pro/#/hi/route"/>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/mileage</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/irs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/measure</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/ifta</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/lease</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/air</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/authority</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://mileagecalculator.pro/#/en/sitemap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

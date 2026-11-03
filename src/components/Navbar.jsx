@@ -17,7 +17,8 @@ import {
   HelpCircle,
   Globe2,
   ChevronDown,
-  Check
+  Check,
+  Atom
 } from 'lucide-react';
 import { LANGUAGES, TRANSLATIONS } from '../i18n/translations';
 
@@ -63,6 +64,7 @@ export default function Navbar({
     { id: 'ev', label: t.tabs?.ev || 'EV vs Gas', icon: Zap, badge: 'Savings' },
     { id: 'convert', label: t.tabs?.convert || 'Unit Converter', icon: Repeat, badge: 'Mi ↔ Km' },
     { id: 'faqs', label: t.tabs?.faqs || 'FAQs & Guide', icon: HelpCircle, badge: 'SEO' },
+    { id: 'authority', label: t.tabs?.authority || 'Knowledge Hub', icon: Atom, badge: 'Pillars' },
     { id: 'sitemap', label: t.tabs?.sitemap || 'Language Index', icon: Globe2, badge: '11 Langs' },
   ];
 

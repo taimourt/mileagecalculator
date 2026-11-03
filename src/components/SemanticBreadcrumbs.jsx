@@ -81,3 +81,4 @@ export default function SemanticBreadcrumbs({ currentLang = 'en', activeTab = 'r
     </nav>
   );
 }
+

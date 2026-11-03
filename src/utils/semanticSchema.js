@@ -166,3 +166,4 @@ export function injectSemanticJsonLd(lang, page) {
   const schema = generateSemanticJsonLd(lang, page);
   scriptEl.textContent = JSON.stringify(schema, null, 2);
 }
+

@@ -12,6 +12,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 const DEFAULT_IFTA_RATES = {
   'Texas (TX)': { rate: 0.20, code: 'TX' },
@@ -341,6 +342,72 @@ export default function IftaTruckingCalculator({ currency = 'USD' }) {
           </form>
         </div>
       </div>
+
+      {/* Educational Guide & IFTA Compliance Section */}
+      <CalculatorEducationalSection
+        title="IFTA Commercial Trucking Fuel Tax Calculator"
+        whatIsIt="The International Fuel Tax Agreement (IFTA) is a cooperative agreement among the 48 contiguous US states and 10 Canadian provinces to simplify the reporting and payment of fuel taxes by commercial interstate motor carriers. This calculator computes overall fleet fuel efficiency (Fleet MPG), state-by-state taxable fuel consumption, net tax credits or balances, and total quarterly liability."
+        howToUse={[
+          'Enter total miles traveled in each jurisdiction during the calendar quarter.',
+          'Enter the actual gallons of diesel fuel purchased at fuel stops in each state with receipts.',
+          'Review the automatically calculated Fleet MPG (Total Miles / Total Gallons).',
+          'Inspect taxable gallons consumed vs. gallons purchased to identify tax balances or credit refunds.'
+        ]}
+        formula={`\\text{Overall Fleet MPG} = \\frac{\\text{Total Miles in All States}}{\\text{Total Gallons Purchased in All States}}
+        
+\\text{Taxable Gallons Consumed in State } i = \\frac{\\text{Miles Driven in State } i}{\\text{Fleet MPG}}
+
+\\text{Net Tax Due / (Credit)} = (\\text{Taxable Gallons} - \\text{Gallons Purchased}) \\times \\text{State Tax Rate}`}
+        example={{
+          description: 'A Class 8 tractor-trailer drives 2,500 total miles across Indiana and Illinois:',
+          inputs: [
+            { label: 'Indiana Miles', value: '1,500 miles (Purchased 250 gal at $0.570/gal tax)' },
+            { label: 'Illinois Miles', value: '1,000 miles (Purchased 150 gal at $0.454/gal tax)' },
+            { label: 'Total Distance & Fuel', value: '2,500 miles, 400 gallons total purchased' }
+          ],
+          steps: [
+            'Calculate Fleet MPG: 2,500 miles ÷ 400 gallons = 6.25 MPG',
+            'Indiana Consumption: 1,500 mi ÷ 6.25 MPG = 240.0 gallons burned (Net credit: 10 gal over-purchased)',
+            'Illinois Consumption: 1,000 mi ÷ 6.25 MPG = 160.0 gallons burned (Net due: 10 gal under-purchased)',
+            'Indiana Tax Credit: -10 gal × $0.570 = -$5.70 credit',
+            'Illinois Tax Due: +10 gal × $0.454 = +$4.54 due'
+          ],
+          result: 'Net Quarterly Balance = -$1.16 Refund / Credit applied to next quarter.'
+        }}
+        understandingResults={[
+          { label: 'Fleet Average MPG', desc: 'Average miles traveled per gallon of fuel across all jurisdictions combined.' },
+          { label: 'Taxable Gallons', desc: 'Fuel legally deemed burned within a state’s borders based on fleet MPG.' },
+          { label: 'Net Tax Due / (Credit)', desc: 'Dollar amount owed if fuel was burned without paying tax in that state, or credit if excess fuel was purchased.' }
+        ]}
+        factors={[
+          { name: 'Quarterly Rate Changes', impact: 'IFTA member jurisdictions update tax rates quarterly on January 1, April 1, July 1, and October 1.' },
+          { name: 'Auxiliary Idle Burn', impact: 'APUs (Auxiliary Power Units) and prolonged winter idling burn fuel without accumulating highway miles, lowering apparent fleet MPG.' },
+          { name: 'Surcharge States', impact: 'Certain states (like Indiana and Kentucky) impose separate per-gallon surcharges in addition to base fuel excise tax.' }
+        ]}
+        faqs={[
+          {
+            q: 'Who is required to file quarterly IFTA returns?',
+            a: 'Any commercial motor vehicle used for business transport that has two axles and a gross vehicle weight exceeding 26,000 lbs, has three or more axles regardless of weight, or is used in combination exceeding 26,000 lbs GVW.'
+          },
+          {
+            q: 'What happens if a carrier has a net credit on their IFTA return?',
+            a: 'The carrier can either request an immediate cash refund check from their base jurisdiction or carry the credit forward to offset next quarter’s liability.'
+          },
+          {
+            q: 'How long must motor carriers keep IFTA fuel receipts and logbooks?',
+            a: 'IFTA mandates that carriers retain all individual vehicle distance records (IVDR), driver logs, and fuel purchase receipts for four years from the return due date.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'route', name: 'Driving Route Calculator', desc: 'Calculate multi-state highway route mileage' },
+          { id: 'mileage', name: 'Gas Mileage Calculator', desc: 'Single-tank vehicle fuel economy and MPG' },
+          { id: 'trip', name: 'Road Trip Cost Splitter', desc: 'Fuel budget and toll expense planning' }
+        ]}
+        relatedGuides={[
+          { id: 'how-to-calculate-cost-per-mile', title: 'How to Calculate Cost Per Mile', desc: 'Commercial operating expenses for fleet operators' },
+          { id: 'how-to-estimate-driving-distance', title: 'How to Estimate Driving Distance', desc: 'Road circuity and highway navigation' }
+        ]}
+      />
     </div>
   );
 }

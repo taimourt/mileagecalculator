@@ -11,6 +11,7 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 export default function LeasePcpCalculator({ currency = 'USD' }) {
   // Inputs
@@ -280,6 +281,74 @@ export default function LeasePcpCalculator({ currency = 'USD' }) {
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Educational Guide */}
+      <CalculatorEducationalSection
+        title="Car Lease & PCP Excess Mileage Calculator"
+        whatIsIt="The Car Lease & PCP Excess Mileage Calculator helps lessees and vehicle finance holders track driving mileage pace throughout their contract. Whether you have a US closed-end personal car lease, a UK Personal Contract Purchase (PCP), or Business Contract Hire (BCH), this tool forecasts your projected return odometer reading, warns of imminent overage charges, and calculates the exact daily and monthly mileage pace needed to return the car penalty-free."
+        howToUse={[
+          'Enter total lease duration in months (e.g., 36 months for a 3-year term).',
+          'Specify your contracted annual mileage allowance (e.g., 10,000 or 12,000 miles/year).',
+          'Enter how many months have elapsed since you drove the car off the dealership lot.',
+          'Input your current odometer reading and your contract’s excess mileage penalty rate (typically $0.15 to $0.30 per excess mile).'
+        ]}
+        formula={`\\text{Total Allowed Miles} = \\left( \\frac{\\text{Lease Months}}{12} \\right) \\times \\text{Annual Allowance}
+
+\\text{Contract Allowance to Date} = \\left( \\frac{\\text{Months Elapsed}}{\\text{Lease Months}} \\right) \\times \\text{Total Allowed Miles}
+
+\\text{Projected Return Odometer} = \\left( \\frac{\\text{Current Odometer}}{\\text{Months Elapsed}} \\right) \\times \\text{Lease Months}
+
+\\text{Estimated Excess Fine} = \\max\\Big(0, \\text{Projected Odometer} - \\text{Total Allowed}\\Big) \\times \\text{Excess Charge Rate}`}
+        example={{
+          description: 'A driver with a 36-month lease and 10,000 miles/year allowance audits their odometer at month 18:',
+          inputs: [
+            { label: 'Lease Contract', value: '36 months, 10,000 mi/yr (30,000 mi total allowed)' },
+            { label: 'Current Progress', value: '18 months elapsed, 18,500 miles on odometer' },
+            { label: 'Excess Rate', value: '$0.20 per excess mile' }
+          ],
+          steps: [
+            'Allowed to Date: (18 ÷ 36) × 30,000 = 15,000 miles allowed by month 18.',
+            'Current Variance: 18,500 - 15,000 = 3,500 miles over current schedule.',
+            'Projected Total: (18,500 ÷ 18) × 36 = 37,000 miles at vehicle hand-back.',
+            'Projected Overage: 37,000 - 30,000 = 7,000 excess miles.',
+            'Penalty Fee: 7,000 mi × $0.20/mi = $1,400.00 estimated return fine.'
+          ],
+          result: 'To avoid the $1,400 penalty, the driver must lower driving pace from 1,028 mi/mo down to 639 mi/mo for the remaining 18 months.'
+        }}
+        understandingResults={[
+          { label: 'Current Status', desc: 'Indicates whether you are currently ahead (buffer) or behind (overage) your pro-rated contract mileage.' },
+          { label: 'Projected Overage Fine', desc: 'Financial penalty invoice expected at lease-end inspection if driving habits continue unchanged.' },
+          { label: 'Target Daily & Monthly Pace', desc: 'Re-calibrated driving budget for remaining months to bring final odometer exactly to contract limit.' }
+        ]}
+        factors={[
+          { name: 'Tiered Penalty Rates', impact: 'Some leasing companies charge a base rate (e.g., $0.15/mi) for the first 5,000 excess miles, and an escalated rate (e.g., $0.25/mi) beyond.' },
+          { name: 'Lease Buyout Exemption', impact: 'If you choose to purchase the vehicle at lease-end for its residual value or trade it in, excess mileage penalties are generally waived.' },
+          { name: 'Pre-Purchasing Extra Miles', impact: 'Many finance companies allow purchasing extra mileage mid-lease at discounted rates (e.g. $0.10/mi vs $0.20/mi return fine).' }
+        ]}
+        faqs={[
+          {
+            q: 'Can I roll over unused miles from a lease if I drive less than allowed?',
+            a: 'Generally no. Closed-end lease contracts do not provide cash rebates or credits for returning a car below the mileage allowance, unless specified in a rare loyalty program.'
+          },
+          {
+            q: 'How does UK PCP excess mileage differ from a lease?',
+            a: 'In a UK Personal Contract Purchase (PCP), excess mileage charges only apply if you exercise the option to return the car to the finance house. If you pay the balloon payment (Guaranteed Minimum Future Value / GMFV) or part-exchange the car, excess fees do not apply.'
+          },
+          {
+            q: 'Does wear and tear inspection happen at the same time as the mileage check?',
+            a: 'Yes. At turn-in, an independent inspector evaluates both odometer mileage and vehicle condition against Fair Wear and Tear guidelines.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'mileage', name: 'Gas Mileage Calculator', desc: 'Odometer tracking and fuel efficiency' },
+          { id: 'irs', name: 'IRS Business Mileage Calculator', desc: 'Deduct business portion of lease expenses' },
+          { id: 'trip', name: 'Trip Cost Calculator', desc: 'Plan mileage budgets for upcoming vacations' }
+        ]}
+        relatedGuides={[
+          { id: 'how-to-calculate-miles-driven', title: 'How to Calculate Miles Driven', desc: 'Odometer math and commuter projections' },
+          { id: 'how-to-calculate-cost-per-mile', title: 'How to Calculate Cost Per Mile', desc: 'Total lease and vehicle operating expenses' }
+        ]}
+      />
     </div>
   );
 }

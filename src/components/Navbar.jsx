@@ -87,6 +87,7 @@ export default function Navbar({
 
   // Resources
   const resourceList = [
+    { id: 'resources', label: 'Educational Guides & Articles', icon: BookOpen, desc: '14 verified guides on mileage, fuel economy, IRS rates, and road trips' },
     { id: 'faqs', label: 'FAQs & Mileage Guide', icon: HelpCircle, desc: 'Frequently asked questions & usage tutorials' },
     { id: 'authority', label: 'Topical Knowledge Hub', icon: Atom, desc: 'In-depth engineering & tax pillars' },
     { id: 'sitemap', label: 'Multilingual Directory', icon: Globe2, desc: '11 language indexable page matrix' },
@@ -503,6 +504,14 @@ export default function Navbar({
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pb-1">
               Resources & About
             </div>
+            <button
+              type="button"
+              onClick={() => handleTabClick('resources')}
+              className="w-full p-2.5 rounded-xl text-left flex items-center gap-2.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40"
+            >
+              <BookOpen className="w-4 h-4 text-emerald-600" />
+              <span>Educational Guides (14 Articles)</span>
+            </button>
             <button
               type="button"
               onClick={() => handleTabClick('faqs')}

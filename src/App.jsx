@@ -23,6 +23,8 @@ import TermsOfService from './components/legal/TermsOfService';
 import AboutUs from './components/legal/AboutUs';
 import ContactUs from './components/legal/ContactUs';
 import CookieConsentBanner from './components/legal/CookieConsentBanner';
+import ResourceHub from './components/resources/ResourceHub';
+import ArticleView from './components/resources/ArticleView';
 import { LANGUAGES, TRANSLATIONS } from './i18n/translations';
 import { injectSemanticJsonLd } from './utils/semanticSchema';
 
@@ -32,17 +34,23 @@ function parseUrlRoute() {
   const validTabs = [
     'route', 'measure', 'mileage', 'trip', 'irs', 'ifta', 'lease',
     'air', 'ev', 'convert', 'faqs', 'sitemap', 'authority',
+    'resources', 'guide',
     'privacy', 'terms', 'about', 'contact'
   ];
 
-  // 1. Check Hash: e.g. #/es/mileage or #/mileage or #es/mileage
+  // 1. Check Hash: e.g. #/es/mileage or #/en/guide/how-to-calculate-cost-per-mile
   const rawHash = window.location.hash.replace(/^#\/?/, '');
   const hashSegments = rawHash.split('/').filter(Boolean);
 
   let lang = 'en';
   let tab = 'route';
+  let articleSlug = null;
 
-  if (hashSegments.length >= 2) {
+  if (hashSegments.length >= 3 && hashSegments[1] === 'guide') {
+    if (validLangs.includes(hashSegments[0])) lang = hashSegments[0];
+    tab = 'guide';
+    articleSlug = hashSegments[2];
+  } else if (hashSegments.length >= 2) {
     if (validLangs.includes(hashSegments[0])) lang = hashSegments[0];
     if (validTabs.includes(hashSegments[1])) tab = hashSegments[1];
   } else if (hashSegments.length === 1) {
@@ -50,10 +58,14 @@ function parseUrlRoute() {
     else if (validTabs.includes(hashSegments[0])) tab = hashSegments[0];
   }
 
-  // 2. Check Pathname if hash was empty: e.g. /es/mileage
+  // 2. Check Pathname if hash was empty: e.g. /en/guide/how-to-calculate-cost-per-mile
   if (hashSegments.length === 0) {
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    if (pathSegments.length >= 2) {
+    if (pathSegments.length >= 3 && pathSegments[1] === 'guide') {
+      if (validLangs.includes(pathSegments[0])) lang = pathSegments[0];
+      tab = 'guide';
+      articleSlug = pathSegments[2];
+    } else if (pathSegments.length >= 2) {
       if (validLangs.includes(pathSegments[0])) lang = pathSegments[0];
       if (validTabs.includes(pathSegments[1])) tab = pathSegments[1];
     } else if (pathSegments.length === 1) {
@@ -62,13 +74,16 @@ function parseUrlRoute() {
     }
   }
 
-  return { lang, tab };
+  return { lang, tab, articleSlug };
 }
 
 export default function App() {
   const initialRoute = parseUrlRoute();
   const [currentLang, setCurrentLang] = useState(initialRoute.lang);
   const [activeTab, setActiveTab] = useState(initialRoute.tab);
+  const [selectedArticleSlug, setSelectedArticleSlug] = useState(
+    initialRoute.articleSlug || 'how-to-calculate-cost-per-mile'
+  );
 
   // Dark mode
   const [isDark, setIsDark] = useState(() => {
@@ -107,9 +122,10 @@ export default function App() {
   // Handle URL sync and browser back/forward buttons
   useEffect(() => {
     const handlePopState = () => {
-      const { lang, tab } = parseUrlRoute();
+      const { lang, tab, articleSlug } = parseUrlRoute();
       setCurrentLang(lang);
       setActiveTab(tab);
+      if (articleSlug) setSelectedArticleSlug(articleSlug);
     };
 
     window.addEventListener('hashchange', handlePopState);
@@ -121,10 +137,11 @@ export default function App() {
   }, []);
 
   // Update URL hash when language or tab changes
-  const updateRoute = (newLang, newTab) => {
+  const updateRoute = (newLang, newTab, slug) => {
     setCurrentLang(newLang);
     setActiveTab(newTab);
-    const targetUrl = `/#/${newLang}/${newTab}`;
+    if (slug) setSelectedArticleSlug(slug);
+    const targetUrl = slug ? `/#/${newLang}/${newTab}/${slug}` : `/#/${newLang}/${newTab}`;
     if (window.location.hash !== targetUrl) {
       window.location.hash = targetUrl;
     }
@@ -373,6 +390,24 @@ export default function App() {
           />
         )}
 
+        {/* Tab 14: Educational Content Hub & Guides */}
+        {activeTab === 'resources' && (
+          <ResourceHub
+            onSelectArticle={(slug) => updateRoute(currentLang, 'guide', slug)}
+            onNavigateTab={(tab) => updateRoute(currentLang, tab)}
+          />
+        )}
+
+        {/* Tab 15: Dedicated Educational Article View */}
+        {activeTab === 'guide' && (
+          <ArticleView
+            slug={selectedArticleSlug}
+            onBack={() => updateRoute(currentLang, 'resources')}
+            onSelectArticle={(slug) => updateRoute(currentLang, 'guide', slug)}
+            onNavigateTab={(tab) => updateRoute(currentLang, tab)}
+          />
+        )}
+
         {/* Legal & Trust Pages (AdSense & Policy Compliance) */}
         {activeTab === 'privacy' && (
           <PrivacyPolicy onNavigate={(tab) => updateRoute(currentLang, tab)} />
@@ -390,8 +425,8 @@ export default function App() {
           <ContactUs onNavigate={(tab) => updateRoute(currentLang, tab)} />
         )}
 
-        {/* Calculation History & Guides shown on non-legal pages */}
-        {!['privacy', 'terms', 'about', 'contact'].includes(activeTab) && (
+        {/* Calculation History & Guides shown on non-legal and non-article pages */}
+        {!['privacy', 'terms', 'about', 'contact', 'resources', 'guide'].includes(activeTab) && (
           <>
             {/* Saved Calculation History */}
             <CalculationHistory

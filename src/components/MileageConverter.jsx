@@ -9,6 +9,7 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { formatNumber } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 export default function MileageConverter() {
   // 1. Distance Converter
@@ -234,6 +235,70 @@ export default function MileageConverter() {
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Educational Guide */}
+      <CalculatorEducationalSection
+        title="Mileage, Fuel Economy & Ratio Unit Converter"
+        whatIsIt="The Mileage, Fuel Economy & Ratio Unit Converter provides verified conversions between imperial, US customary, and SI metric measurement systems. It supports distance conversions (Miles, Kilometers, Nautical Miles, Feet), fuel economy transformations (US MPG, Imperial UK MPG, L/100km, km/L), and 2-stroke small-engine oil-gas premix ratios."
+        howToUse={[
+          'Enter any value into the Distance box to convert between Miles, km, NM, and feet.',
+          'Input your vehicle’s fuel efficiency into the Fuel Economy box to see exact US MPG, Imperial MPG, and L/100km equivalents.',
+          'Use the 2-Cycle Oil Premix tool by selecting gas volume and fuel ratio (e.g., 50:1 or 40:1) to get exact oil fluid ounces.'
+        ]}
+        formula={`\\text{Miles to Kilometers:} \\quad \\text{km} = \\text{miles} \\times 1.609344
+
+\\text{US MPG to L/100km:} \\quad \\text{L/100km} = \\frac{235.214583}{\\text{US MPG}}
+
+\\text{Imperial UK MPG to US MPG:} \\quad \\text{US MPG} = \\frac{\\text{UK MPG}}{1.20095}
+
+\\text{2-Stroke Oil Fluid Ounces:} \\quad \\text{Oil (fl oz)} = \\frac{\\text{Gas Gallons} \\times 128}{\\text{Mix Ratio}}`}
+        example={{
+          description: 'Converting a 30.0 US MPG vehicle rating to European metric L/100km and UK Imperial MPG:',
+          inputs: [
+            { label: 'Input Fuel Economy', value: '30.0 US Miles Per Gallon' },
+            { label: 'Conversion Factor', value: '235.214583 (constant for US Gallons to L/100km)' }
+          ],
+          steps: [
+            'L/100km Calculation: 235.214583 ÷ 30.0 = 7.8405 L/100km.',
+            'UK Imperial MPG Calculation: 30.0 × 1.20095 = 36.03 Imperial MPG.',
+            'Kilometers Per Liter: 30.0 × 0.425144 = 12.75 km/L.'
+          ],
+          result: '30.0 US MPG = 7.84 L/100km = 36.03 UK Imperial MPG = 12.75 km/L.'
+        }}
+        understandingResults={[
+          { label: 'US MPG vs Imperial UK MPG', desc: 'A UK Imperial Gallon is 20% larger than a US Gallon (4.546 liters vs 3.785 liters), meaning a car tested in the UK appears to get 20% higher numerical MPG for identical physical fuel efficiency.' },
+          { label: 'Inverse Relationship of L/100km', desc: 'Unlike MPG where higher is better, in L/100km lower is better. An improvement from 20 to 10 L/100km cuts fuel consumption in half.' },
+          { label: '2-Stroke Ratio Accuracy', desc: 'Precision oil measurements protect 2-cycle cylinder walls and piston rings from scoring while avoiding excess exhaust smoke.' }
+        ]}
+        factors={[
+          { name: 'US vs Imperial Liquid Measures', impact: '1 US fluid ounce is 29.5735 ml, while 1 UK fluid ounce is 28.4131 ml. Using correct regional units is vital when ordering engine lubricants.' },
+          { name: 'The MPG Illusion', impact: 'Replacing a 10 MPG vehicle with a 15 MPG vehicle saves 3.3 gallons every 100 miles. Replacing a 30 MPG car with a 50 MPG car saves only 1.3 gallons. L/100km reveals this directly.' },
+          { name: 'Nautical vs Statute Conversions', impact: '1 Nautical Mile (1,852 m) is approximately 1.1508 statute miles. Using statute miles for marine or air navigation results in a 13% underestimation of voyage distance.' }
+        ]}
+        faqs={[
+          {
+            q: 'Why does Canada use L/100km instead of km/L?',
+            a: 'Canada, Europe, Australia, and New Zealand standardized on Liters per 100 Kilometers because it measures fuel consumption (volume per distance) rather than fuel economy (distance per volume), which scales linearly with cost and greenhouse emissions.'
+          },
+          {
+            q: 'How many fluid ounces of 2-stroke oil are needed for 5 gallons of gas at 50:1?',
+            a: '5 gallons contains 640 fluid ounces (5 × 128). Dividing 640 by 50 yields exactly 12.8 fluid ounces of 2-cycle oil.'
+          },
+          {
+            q: 'Is a British mile longer than an American mile?',
+            a: 'No. Both the United States and the United Kingdom signed the 1959 International Yard and Pound Agreement, establishing that one international statute mile is exactly 1,609.344 meters in both countries.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'mileage', name: 'Gas Mileage Calculator', desc: 'Calculate tank MPG and fuel cost per mile' },
+          { id: 'trip', name: 'Road Trip Cost Splitter', desc: 'Calculate multi-stop highway expenses' },
+          { id: 'measure', name: 'Map Distance Tool', desc: 'Measure distance across interactive maps' }
+        ]}
+        relatedGuides={[
+          { id: 'miles-vs-kilometers-understanding-distance-units', title: 'Miles vs Kilometers', desc: 'Mathematical foundations and Fibonacci mental math' },
+          { id: 'mpg-vs-gpm', title: 'MPG vs GPM: The MPG Illusion', desc: 'Why Gallons Per Mile fixes deceptive fuel efficiency metrics' }
+        ]}
+      />
     </div>
   );
 }

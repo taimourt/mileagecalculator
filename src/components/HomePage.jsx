@@ -518,6 +518,18 @@ export default function HomePage({
             </div>
           </div>
         </div>
+
+        {/* CTA to Resource Hub */}
+        <div className="pt-2 text-center">
+          <button
+            type="button"
+            onClick={() => onNavigateTab('resources')}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md transition"
+          >
+            <BookOpen className="w-4 h-4 text-emerald-400 dark:text-white" />
+            <span>Explore All 14 Educational Guides & Articles &rarr;</span>
+          </button>
+        </div>
       </section>
 
       {/* =========================================================================

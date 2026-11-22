@@ -18,12 +18,15 @@ import { POPULAR_ROUTES, CITY_COORDINATES } from '../data/cityPresets';
 import { geocodeLocation, getDrivingRoute } from '../utils/geocoding';
 import { formatCurrency, formatNumber, formatDuration } from '../utils/formatters';
 import LeafletMap from './LeafletMap';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
+import { Copy, Check, RotateCcw, Compass, Zap, FileText } from 'lucide-react';
 
 export default function RouteDistanceCalculator({
   unitSystem = 'us',
   currency = 'USD',
   onSendToTripCost,
   onSendToMileage,
+  onNavigateTab,
 }) {
   const [fromAddress, setFromAddress] = useState('New York, NY');
   const [toAddress, setToAddress] = useState('Boston, MA');
@@ -41,6 +44,7 @@ export default function RouteDistanceCalculator({
   const [routeResult, setRouteResult] = useState(null);
   const [mapPoints, setMapPoints] = useState([]);
   const [polylineCoords, setPolylineCoords] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   // Auto-calculate on initial load
   useEffect(() => {
@@ -402,7 +406,22 @@ export default function RouteDistanceCalculator({
               </h3>
 
               {/* Action Buttons to send to other tabs */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const summary = `Driving Route Summary:\nFrom: ${fromAddress} to ${toAddress}${waypoints.filter(Boolean).length > 0 ? ` (via ${waypoints.filter(Boolean).join(', ')})` : ''}\nDistance: ${formatNumber(unitSystem === 'us' ? totalMiles : totalKm, 1)} ${unitSystem === 'us' ? 'miles' : 'km'}\nDriving Time: ${formatDuration(totalHours)}\nFuel Required: ${formatNumber(unitSystem === 'us' ? gallonsNeeded : litersNeeded, 1)} ${unitSystem === 'us' ? 'gal' : 'L'} (~${formatCurrency(estimatedFuelCost, currency)})\nCalculated on MileageCalculatorPro.com`;
+                    navigator.clipboard.writeText(summary).then(() => {
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 2500);
+                    });
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 text-xs font-semibold text-slate-700 dark:text-slate-200 transition shadow-sm"
+                >
+                  {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copied ? 'Copied!' : 'Copy Summary'}</span>
+                </button>
+
                 {onSendToTripCost && (
                   <button
                     type="button"
@@ -470,6 +489,72 @@ export default function RouteDistanceCalculator({
           </div>
         )}
       </div>
+
+      {/* Educational Section */}
+      <CalculatorEducationalSection
+        title="Driving Route & Distance Calculator"
+        whatIsIt="The Driving Route & Distance Calculator computes real-world road highway mileage, travel duration, and fuel consumption between any two or more addresses, cities, or GPS coordinates. By querying OpenStreetMap and the Open Source Routing Machine (OSRM) highway network graph, it traces actual turn-by-turn road polylines, accounting for highway ramps, river crossings, and road circuity rather than relying on straight-line air distance."
+        howToUse={[
+          'Enter your starting location (Origin) and final destination (City, address, or zip code).',
+          'Optionally click "+ Add Waypoint Stop" to add up to 4 intermediate stops along your itinerary.',
+          'Adjust vehicle fuel economy (MPG) and current local gas prices to get a live fuel expense forecast.',
+          'Review the interactive Leaflet map, turn polyline, travel duration, and export or transfer results directly to the Trip Cost Splitter.',
+        ]}
+        formula={
+`// 1. Road Network Distance vs Geodesic Distance
+Road Distance (D_road) = Σ (Segment lengths along OpenStreetMap road graph)
+Geodesic Air Distance (D_geo) = 2R · arcsin(√(sin²(Δφ/2) + cos(φ₁)·cos(φ₂)·sin²(Δλ/2)))
+Road Circuity Factor (CI) = D_road ÷ D_geo  ≈ 1.20 to 1.25
+
+// 2. Fuel Consumption
+Fuel Required (Gallons) = Total Road Distance (miles) ÷ Vehicle Fuel Economy (MPG)
+Fuel Required (Liters) = (Total Distance in km × L/100km) ÷ 100
+
+// 3. Estimated Fuel Cost
+Fuel Cost = Fuel Required × Fuel Price per Gallon (or Liter)`
+        }
+        example={{
+          scenario: 'A sales consultant drives from New York, NY to Boston, MA (215 driving miles) in a sedan achieving 30 MPG with gasoline at $3.50 per gallon.',
+          inputs: ['Origin: New York, NY', 'Destination: Boston, MA', 'Vehicle MPG: 30.0 MPG', 'Gas Price: $3.50 / gallon'],
+          results: ['Actual Road Distance: 215.3 miles (346.5 km)', 'Estimated Travel Time: 3 hours 45 minutes', 'Fuel Required: 7.18 gallons', 'Estimated Fuel Cost: $25.13', 'Cost Per Mile: $0.117 / mile']
+        }}
+        understandingResults={[
+          { term: 'Driving Road Distance', definition: 'The physical terrestrial distance along navigable highways and streets, which is typically 15% to 30% longer than straight-line distance due to terrain and highway geometry.' },
+          { term: 'Estimated Driving Time', definition: 'The estimated transit duration assuming standard speed limits across highway and arterial segments under free-flow conditions.' },
+          { term: 'Fuel Required', definition: 'The projected volume of fuel consumed based on entered vehicle economy parameters.' },
+          { term: 'Cost Per Mile', definition: 'The direct fuel expense incurred for each mile driven on this route.' },
+        ]}
+        factors={[
+          'Traffic Congestion: Real-time rush hour slowdowns, construction, and traffic accidents will increase travel time and idle fuel consumption.',
+          'Speed & Aggressive Driving: Highway speeds exceeding 65 mph (105 km/h) dramatically increase aerodynamic wind resistance, reducing fuel economy.',
+          'Cold Weather: Winter driving decreases battery range for EVs and increases warm-up fuel consumption for internal combustion engines.',
+          'Toll Roads vs Free Highways: Major interstates often include bridge or turnpike tolls that should be budgeted using our Trip Cost Splitter.',
+        ]}
+        faqs={[
+          {
+            q: 'How does this tool calculate driving distance compared to Google Maps?',
+            a: 'Our calculator utilizes the Open Source Routing Machine (OSRM) engine and OpenStreetMap (OSM) roadway data, computing actual highway routes, street turns, and driving distances with high precision while keeping your searches 100% private in your browser.'
+          },
+          {
+            q: 'Why is road driving distance always greater than straight-line "as the crow flies" distance?',
+            a: 'Straight-line distance (orthodromic distance) measures the shortest path through the Earth\'s curvature. Roads must navigate hills, rivers, property lines, and existing urban grids. The ratio between road distance and straight-line distance is called the Circuity Index, which averages 1.20 to 1.25 across North American highway networks.'
+          },
+          {
+            q: 'Can I add multiple stops or delivery destinations to my route?',
+            a: 'Yes! Click the "+ Add Waypoint Stop" button to add up to 4 intermediate stops. The routing engine recalculates the entire accumulated trip distance, transit time, and fuel budget.'
+          },
+          {
+            q: 'What should I do if an address or small town is not found?',
+            a: 'Try adding the state, province, or postal code (e.g. "Springfield, IL" or "90210"). Our geocoding system uses OpenStreetMap Nominatim with a built-in cache of major world cities as fallback.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'trip', title: 'Road Trip Cost Splitter', description: 'Budget fuel, tolls, and parking expenses and split costs evenly among passengers.', icon: Compass },
+          { id: 'mileage', title: 'Gas Mileage & Odometer', description: 'Verify your vehicle\'s actual real-world MPG using full-tank odometer math.', icon: Fuel },
+          { id: 'measure', title: 'Map Distance Measurement', description: 'Measure direct straight-line distances and custom walking paths by clicking on a map.', icon: Ruler },
+        ]}
+        onNavigateTab={onNavigateTab}
+      />
     </div>
   );
 }

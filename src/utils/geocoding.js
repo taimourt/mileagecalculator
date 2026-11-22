@@ -1,4 +1,4 @@
-import { CITY_COORDINATES } from '../data/cityPresets';
+import { CITY_COORDINATES } from '../data/cityPresets.js';
 
 // Calculate Haversine direct distance between two points in miles
 export function haversineDistance(lat1, lon1, lat2, lon2) {

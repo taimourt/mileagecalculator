@@ -18,6 +18,8 @@ export default function SemanticBreadcrumbs({ currentLang = 'en', activeTab = 'r
     faqs: 'Frequently Asked Questions',
     sitemap: 'Multilingual Sitemap Directory',
     authority: 'Topical Authority & Knowledge Hub',
+    resources: 'Educational Guides & Articles',
+    guide: 'Educational Guide',
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
     about: 'About Us',

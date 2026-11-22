@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { calculateEvVsGas } from '../utils/calculations';
 import { formatCurrency, formatNumber } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 export default function EvVsGasCalculator({
   currency = 'USD',
@@ -260,6 +261,74 @@ export default function EvVsGasCalculator({
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Educational Guide */}
+      <CalculatorEducationalSection
+        title="Electric Vehicle vs Gas Savings Calculator"
+        whatIsIt="The Electric Vehicle vs Gas Savings Calculator provides a rigorous comparative financial and environmental analysis between internal combustion engine (gasoline/diesel) automobiles and battery electric vehicles (BEVs). It models direct fueling expenses, per-mile electricity costs, maintenance savings (such as eliminating oil changes, spark plugs, and transmission servicing), and estimated 5-year total cost of driving deltas."
+        howToUse={[
+          'Enter your expected annual driving mileage (US average is ~13,500 miles/year).',
+          'Specify your gasoline vehicle’s combined fuel economy rating (MPG) and current local gasoline price.',
+          'Enter the electric vehicle’s efficiency rating in kWh per 100 miles (or MPGe).',
+          'Input your residential electricity tariff ($/kWh) and select your comparison timeframe (typically 3 to 7 years).'
+        ]}
+        formula={`\\text{Gasoline Cost Per Mile} = \\frac{\\text{Gas Price per Gallon}}{\\text{Vehicle MPG}}
+
+\\text{Electric Cost Per Mile} = \\frac{\\text{kWh per 100 Miles}}{100} \\times \\text{Electricity Price per kWh}
+
+\\text{Annual Fuel Savings} = \\text{Annual Miles} \\times (\\text{Gas CPM} - \\text{EV CPM})
+
+\\text{Multi-Year Net Advantage} = \\big(\\text{Annual Fuel Savings} + \\text{Annual Maint Savings}\\big) \\times \\text{Horizon Years}`}
+        example={{
+          description: 'Comparing a 28 MPG gas sedan against a 28 kWh/100mi EV over 12,000 annual miles with gas at $3.60/gal and home power at $0.16/kWh:',
+          inputs: [
+            { label: 'Gasoline Vehicle', value: '28.0 MPG at $3.60/gallon' },
+            { label: 'Electric Vehicle', value: '28.0 kWh per 100 miles at $0.16/kWh' },
+            { label: 'Annual Mileage', value: '12,000 miles per year over 5 years' }
+          ],
+          steps: [
+            'Gasoline CPM: $3.60 ÷ 28 = $0.1286 per mile ($1,542.86 / year)',
+            'Electric CPM: (28 ÷ 100) × $0.16 = $0.0448 per mile ($537.60 / year)',
+            'Annual Fuel Savings: $1,542.86 - $537.60 = $1,005.26 / year',
+            'Estimated Maintenance Delta: ~$350 / year in reduced brake and fluid service',
+            '5-Year Net Financial Benefit: ($1,005.26 + $350) × 5 = $6,776.30 in total savings'
+          ],
+          result: 'Driving electric delivers $1,005.26 in direct fuel savings each year, plus an offset of ~6,800 lbs of CO₂ emissions annually.'
+        }}
+        understandingResults={[
+          { label: 'Cost Per Mile Comparison', desc: 'Direct cost to power the vehicle forward by one mile on gasoline versus grid electricity.' },
+          { label: '5-Year Cumulative Savings', desc: 'Total compounding cash savings over the entire ownership window.' },
+          { label: 'Annual CO₂ Offset', desc: 'Net reduction in greenhouse gas emissions compared to internal combustion tailpipe exhaust.' }
+        ]}
+        factors={[
+          { name: 'Residential vs Public Charging', impact: 'Home Level 2 charging averages $0.14–$0.18/kWh, while commercial DC fast chargers (Tesla Supercharger, Electrify America) often cost $0.38–$0.50/kWh.' },
+          { name: 'Winter Cold Weather Penalty', impact: 'In freezing conditions (below 25°F / -4°C), cabin heating and battery chemistry resistance reduce EV range by 20% to 30%.' },
+          { name: 'Tire Wear Differences', impact: 'EVs weigh 15% to 25% more due to battery packs and deliver instant torque, leading to slightly faster tire replacement cycles.' }
+        ]}
+        faqs={[
+          {
+            q: 'How does the EPA determine MPGe (Miles Per Gallon Equivalent)?',
+            a: 'The EPA establishes that one standard gallon of gasoline contains 114,989 BTUs of thermal energy, which converts to exactly 33.705 kilowatt-hours (kWh) of electricity. An EV that travels 100 miles on 33.705 kWh is rated at exactly 100 MPGe.'
+          },
+          {
+            q: 'Are electric vehicle batteries guaranteed under warranty?',
+            a: 'Yes. Federal US regulations require automakers to warranty EV traction batteries for a minimum of 8 years or 100,000 miles against total failure or capacity degradation below 70%.'
+          },
+          {
+            q: 'Do EV owners pay higher annual vehicle registration fees?',
+            a: 'Many states impose a $100 to $225 annual EV road user fee during registration renewal to replace lost state gasoline excise taxes used for highway maintenance.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'mileage', name: 'Gas Mileage Calculator', desc: 'Measure ICE gasoline fuel economy' },
+          { id: 'trip', name: 'Road Trip Cost Splitter', desc: 'Plan highway trip travel expenses' },
+          { id: 'convert', name: 'Unit Converter', desc: 'Convert MPG, L/100km, and energy units' }
+        ]}
+        relatedGuides={[
+          { id: 'how-to-improve-fuel-economy', title: 'How to Improve Fuel Economy', desc: 'Proven aerodynamic and driving efficiency habits' },
+          { id: 'what-factors-affect-fuel-consumption', title: 'What Factors Affect Fuel Consumption', desc: 'Aerodynamics, rolling resistance and temperature' }
+        ]}
+      />
     </div>
   );
 }

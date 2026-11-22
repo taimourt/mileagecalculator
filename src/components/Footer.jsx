@@ -89,6 +89,12 @@ export default function Footer({ onNavigateTab }) {
             </h4>
             <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
               <li>
+                <button type="button" onClick={() => handleNav('resources')} className="hover:text-emerald-600 dark:hover:text-emerald-400 font-bold text-emerald-600 dark:text-emerald-400 transition text-left flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <span>Educational Guides (14 Articles)</span>
+                </button>
+              </li>
+              <li>
                 <button type="button" onClick={() => handleNav('faqs')} className="hover:text-emerald-600 dark:hover:text-emerald-400 transition text-left">
                   FAQs & Mileage Guide
                 </button>

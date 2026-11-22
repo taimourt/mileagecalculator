@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { haversineDistance } from '../utils/geocoding';
 import { formatNumber } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 export default function MapMeasureTool({ unitSystem = 'us', currency = 'USD' }) {
   const mapContainerRef = useRef(null);
@@ -449,6 +450,68 @@ export default function MapMeasureTool({ unitSystem = 'us', currency = 'USD' }) 
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Educational Guide */}
+      <CalculatorEducationalSection
+        title="Interactive Map Distance Measurement Tool"
+        whatIsIt="The Map Distance Measurement Tool functions similarly to the Google Maps measuring utility, allowing users to drop point-by-point pins across interactive satellite and street map layers. It computes multi-segment straight-line geodesic distance, cumulative perimeter lengths, walking trail distances, and marine nautical mile routes with sub-meter numerical precision."
+        howToUse={[
+          'Click anywhere on the interactive map canvas to drop your first starting waypoint pin.',
+          'Click additional locations to draw a contiguous polyline path connecting each coordinate.',
+          'View real-time distance updates in Miles, Kilometers, Feet, Meters, and Nautical Miles.',
+          'Use the Undo button to remove the last dropped waypoint or Clear Map to start over.'
+        ]}
+        formula={`d = 2R \\cdot \\arcsin\\left(\\sqrt{\\sin^2\\left(\\frac{\\Delta\\phi}{2}\\right) + \\cos(\\phi_1)\\cos(\\phi_2)\\sin^2\\left(\\frac{\\Delta\\lambda}{2}\\right)}\\right)
+
+\\text{Total Path Length} = \\sum_{i=1}^{n-1} d(P_i, P_{i+1})`}
+        example={{
+          description: 'Measuring a three-point walking trail around an urban park reservoir:',
+          inputs: [
+            { label: 'Waypoint 1 to 2', value: '40.78509, -73.96828 to 40.78912, -73.96245' },
+            { label: 'Waypoint 2 to 3', value: '40.78912, -73.96245 to 40.78345, -73.95890' },
+            { label: 'Segment Distances', value: 'Segment A = 0.42 mi, Segment B = 0.45 mi' }
+          ],
+          steps: [
+            'Convert latitude/longitude degree coordinates to radians.',
+            'Compute great-circle chord arc length across Earth sphere radius (R = 3,958.8 miles).',
+            'Sum Segment 1 (0.42 mi) + Segment 2 (0.45 mi) = 0.87 total miles (1.40 km).'
+          ],
+          result: 'Total measured perimeter: 0.87 miles (4,593 feet / 1,400 meters).'
+        }}
+        understandingResults={[
+          { label: 'Statute Miles & Feet', desc: 'Standard terrestrial imperial distance measurements across land.' },
+          { label: 'Kilometers & Meters', desc: 'Standard SI metric units used internationally for athletic training and surveying.' },
+          { label: 'Nautical Miles (NM)', desc: 'Standard maritime and aviation unit equal to exactly 1,852 meters (one minute of arc).' }
+        ]}
+        factors={[
+          { name: 'Spherical vs Spheroidal Earth', impact: 'Haversine assumes a sphere with constant radius (3,958.8 mi). Across continents, Earth’s oblate equatorial bulge introduces a ~0.3% delta compared to WGS-84 ellipsoidal math.' },
+          { name: 'Road Network Detours', impact: 'Straight-line air measurements do not follow terrain switchbacks. Actual road driving distances are typically 20% to 25% longer due to circuity.' },
+          { name: 'Elevation Relief', impact: 'Steep topographic terrain creates additional true slope distance that exceeds 2D flat planar projections.' }
+        ]}
+        faqs={[
+          {
+            q: 'How does straight-line measurement compare to driving route navigation?',
+            a: 'Straight-line measurement calculates the shortest unobstructed distance across the surface of the Earth. Driving routes query OpenStreetMap road vectors, taking into account freeways, bridges, one-way streets, and speed limits.'
+          },
+          {
+            q: 'Can this tool measure land area in square feet or acres?',
+            a: 'Currently this tool measures linear polyline distance. To calculate closed-polygon square acreage, connect the final pin back to the starting pin to determine total perimeter bounds.'
+          },
+          {
+            q: 'Are satellite tiles updated in real time?',
+            a: 'Map tiles are served from OpenStreetMap and Esri World Imagery global satellite compilations, updated on seasonal and annual cycles.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'route', name: 'Driving Route Calculator', desc: 'Turn-by-turn road route driving distance' },
+          { id: 'air', name: 'Air Miles Flight Calculator', desc: 'Airport-to-airport flight distance' },
+          { id: 'convert', name: 'Distance Unit Converter', desc: 'Convert miles, kilometers, feet, and meters' }
+        ]}
+        relatedGuides={[
+          { id: 'how-to-estimate-driving-distance', title: 'How to Estimate Driving Distance', desc: 'Road circuity and geospatial routing math' },
+          { id: 'miles-vs-kilometers-understanding-distance-units', title: 'Miles vs Kilometers', desc: 'Mathematical definitions and conversion constants' }
+        ]}
+      />
     </div>
   );
 }

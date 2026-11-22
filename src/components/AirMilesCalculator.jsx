@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { haversineDistance } from '../utils/geocoding';
 import { formatNumber, formatDuration } from '../utils/formatters';
+import CalculatorEducationalSection from './common/CalculatorEducationalSection';
 
 const POPULAR_AIRPORTS = [
   { code: 'JFK', name: 'New York (JFK)', city: 'New York', lat: 40.6413, lng: -73.7781 },
@@ -250,6 +251,71 @@ export default function AirMilesCalculator() {
           </div>
         </div>
       </div>
+
+      {/* Comprehensive Educational Guide */}
+      <CalculatorEducationalSection
+        title="Aeronautical Air Miles & Flight Distance Calculator"
+        whatIsIt="The Aeronautical Air Miles Calculator computes precise great-circle flight distances between commercial airports worldwide using official IATA and ICAO aerodrome geodetic coordinates. It models great-circle statute miles, nautical miles (NM), estimated airborne gate-to-gate flight durations based on 510 MPH typical commercial jet cruising airspeeds, and airline frequent flyer loyalty program base points."
+        howToUse={[
+          'Select or search your departure airport from the departure dropdown (e.g., JFK - New York).',
+          'Select your destination airport (e.g., LHR - London Heathrow).',
+          'Review the calculated orthodromic great-circle flight path distance.',
+          'Check estimated airborne flight time, nautical mile equivalents, and eligible elite qualifying points.'
+        ]}
+        formula={`d = 2R \\cdot \\arcsin\\left(\\sqrt{\\sin^2\\left(\\frac{\\Delta\\phi}{2}\\right) + \\cos(\\phi_1)\\cos(\\phi_2)\\sin^2\\left(\\frac{\\Delta\\lambda}{2}\\right)}\\right)
+
+\\text{Nautical Miles} = \\frac{\\text{Statute Miles}}{1.150779}
+
+\\text{Flight Time (Hours)} = \\frac{\\text{Distance}}{510\\text{ MPH}} + 0.5\\text{ hr (Taxi, Climb & Approach)}`}
+        example={{
+          description: 'Calculating a transatlantic commercial flight from New York JFK to London Heathrow (LHR):',
+          inputs: [
+            { label: 'Departure Airport', value: 'JFK (40.6413° N, 73.7781° W)' },
+            { label: 'Arrival Airport', value: 'LHR (51.4700° N, 0.4543° W)' },
+            { label: 'Cruising Airspeed', value: '510 MPH typical Boeing 777 / Airbus A350 cruise' }
+          ],
+          steps: [
+            'Convert geographic coordinates into spherical radians.',
+            'Execute Haversine spherical arc trigonometry with R = 3,958.8 statute miles.',
+            'Great-circle distance = 3,451 statute miles (3,000 nautical miles / 5,554 km).',
+            'Airborne flight time: (3,451 ÷ 510) + 0.5 taxi/descent ≈ 7 hours 15 minutes.'
+          ],
+          result: 'Flight Distance: 3,451 miles (3,000 NM). Estimated airborne duration: ~7h 15m. Base Frequent Flyer Points: 3,451.'
+        }}
+        understandingResults={[
+          { label: 'Statute Air Miles', desc: 'The direct shortest line flight distance across the Earth measured in land miles (5,280 ft).' },
+          { label: 'Nautical Miles (NM)', desc: 'The universal unit of aviation and maritime navigation (1 NM = 1,852 meters).' },
+          { label: 'Frequent Flyer Miles', desc: 'Standard 1:1 base elite qualifying miles (EQMs) credited before cabin class multiplier bonuses.' }
+        ]}
+        factors={[
+          { name: 'Jet Stream Wind Velocities', impact: 'High-altitude jet streams (often exceeding 120–160 knots) shorten eastbound transatlantic flights by over an hour, while adding flight time when heading westbound.' },
+          { name: 'Air Traffic Control Routing', impact: 'Actual flight plans follow organized North Atlantic Tracks (NATs) or Pacific Organised Track Systems (PACOTS) to maintain radar separation, slightly exceeding theoretical great-circle routes.' },
+          { name: 'Extended Twin-Engine Operations (ETOPS)', impact: 'Twin-engine passenger planes follow routes that remain within certified diversion distances (e.g. 180 or 240 minutes) from suitable emergency alternate runways.' }
+        ]}
+        faqs={[
+          {
+            q: 'Why do flight paths curve toward the North Pole on flat maps?',
+            a: 'Because the Earth is a three-dimensional sphere, the shortest distance between two points (a great circle) projects as an upward arching curve when flattened onto a standard cylindrical Mercator projection map.'
+          },
+          {
+            q: 'Do frequent flyer loyalty programs award miles based on actual distance or ticket price?',
+            a: 'Traditionally programs awarded 1 mile per air mile flown. Modern US airline programs (Delta SkyMiles, United MileagePlus, American AAdvantage) now award redeemable miles based on fare dollars spent, but still use physical flight distance for elite status qualification (EQMs).'
+          },
+          {
+            q: 'How accurate is the flight duration estimate?',
+            a: 'Our calculator uses a standardized commercial jet cruise benchmark (510 MPH / 443 knots true airspeed) plus 30 minutes for taxi, climb to 35,000 ft, and instrument approach. Real-world block times vary by wind velocity and airport runway congestion.'
+          }
+        ]}
+        relatedCalculators={[
+          { id: 'route', name: 'Driving Route Distance Calculator', desc: 'Compare flight vs driving route distance' },
+          { id: 'measure', name: 'Map Distance Tool', desc: 'Interactive point-to-point map distance' },
+          { id: 'convert', name: 'Distance Unit Converter', desc: 'Convert nautical miles, statute miles, and km' }
+        ]}
+        relatedGuides={[
+          { id: 'how-to-estimate-driving-distance', title: 'How to Estimate Driving Distance', desc: 'Great-circle vs road circuity comparison' },
+          { id: 'miles-vs-kilometers-understanding-distance-units', title: 'Miles vs Kilometers', desc: 'Statute mile vs nautical mile definitions' }
+        ]}
+      />
     </div>
   );
 }

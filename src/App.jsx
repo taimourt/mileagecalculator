@@ -17,13 +17,22 @@ import SemanticBreadcrumbs from './components/SemanticBreadcrumbs';
 import FormulaGuide from './components/FormulaGuide';
 import CalculationHistory from './components/CalculationHistory';
 import Footer from './components/Footer';
+import PrivacyPolicy from './components/legal/PrivacyPolicy';
+import TermsOfService from './components/legal/TermsOfService';
+import AboutUs from './components/legal/AboutUs';
+import ContactUs from './components/legal/ContactUs';
+import CookieConsentBanner from './components/legal/CookieConsentBanner';
 import { LANGUAGES, TRANSLATIONS } from './i18n/translations';
 import { injectSemanticJsonLd } from './utils/semanticSchema';
 
 // Parser to extract language and page from URL path or hash
 function parseUrlRoute() {
   const validLangs = LANGUAGES.map((l) => l.code);
-  const validTabs = ['route', 'measure', 'mileage', 'trip', 'irs', 'ifta', 'lease', 'air', 'ev', 'convert', 'faqs', 'sitemap', 'authority'];
+  const validTabs = [
+    'route', 'measure', 'mileage', 'trip', 'irs', 'ifta', 'lease',
+    'air', 'ev', 'convert', 'faqs', 'sitemap', 'authority',
+    'privacy', 'terms', 'about', 'contact'
+  ];
 
   // 1. Check Hash: e.g. #/es/mileage or #/mileage or #es/mileage
   const rawHash = window.location.hash.replace(/^#\/?/, '');
@@ -351,30 +360,55 @@ export default function App() {
           />
         )}
 
-        {/* Saved Calculation History */}
-        <CalculationHistory
-          history={history}
-          onClearHistory={handleClearHistory}
-        />
+        {/* Legal & Trust Pages (AdSense & Policy Compliance) */}
+        {activeTab === 'privacy' && (
+          <PrivacyPolicy onNavigate={(tab) => updateRoute(currentLang, tab)} />
+        )}
 
-        {/* Comprehensive Formulas, Derivations & Educational Guide */}
-        <FormulaGuide />
+        {activeTab === 'terms' && (
+          <TermsOfService onNavigate={(tab) => updateRoute(currentLang, tab)} />
+        )}
 
-        {/* Language Directory footer link */}
-        {activeTab !== 'sitemap' && (
-          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
-            <button
-              type="button"
-              onClick={() => updateRoute(currentLang, 'sitemap')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition"
-            >
-              <span>🌐 View All 121 Indexable Multilingual Page URLs</span>
-            </button>
-          </div>
+        {activeTab === 'about' && (
+          <AboutUs onNavigate={(tab) => updateRoute(currentLang, tab)} />
+        )}
+
+        {activeTab === 'contact' && (
+          <ContactUs onNavigate={(tab) => updateRoute(currentLang, tab)} />
+        )}
+
+        {/* Calculation History & Guides shown on non-legal pages */}
+        {!['privacy', 'terms', 'about', 'contact'].includes(activeTab) && (
+          <>
+            {/* Saved Calculation History */}
+            <CalculationHistory
+              history={history}
+              onClearHistory={handleClearHistory}
+            />
+
+            {/* Comprehensive Formulas, Derivations & Educational Guide */}
+            <FormulaGuide />
+
+            {/* Language Directory footer link */}
+            {activeTab !== 'sitemap' && (
+              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
+                <button
+                  type="button"
+                  onClick={() => updateRoute(currentLang, 'sitemap')}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition"
+                >
+                  <span>🌐 View All 121 Indexable Multilingual Page URLs</span>
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
 
-      <Footer />
+      <Footer onNavigateTab={(tab) => updateRoute(currentLang, tab)} />
+
+      {/* GDPR & AdSense Compliant Cookie Consent Banner */}
+      <CookieConsentBanner onNavigate={(tab) => updateRoute(currentLang, tab)} />
     </div>
   );
 }

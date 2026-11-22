@@ -16,6 +16,10 @@ export default function SemanticBreadcrumbs({ currentLang = 'en', activeTab = 'r
     faqs: 'Frequently Asked Questions',
     sitemap: 'Multilingual Sitemap Directory',
     authority: 'Topical Authority & Knowledge Hub',
+    privacy: 'Privacy Policy',
+    terms: 'Terms of Service',
+    about: 'About Us',
+    contact: 'Contact Us',
   };
 
   const currentTabName = tabNames[activeTab] || activeTab;

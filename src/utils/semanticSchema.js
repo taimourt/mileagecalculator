@@ -23,7 +23,7 @@ export const WIKIDATA_ENTITIES = {
  * Generate full Schema.org JSON-LD graph for any given tool & language
  */
 export function generateSemanticJsonLd(lang = 'en', page = 'route') {
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://mileagecalculator.pro';
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.mileagecalculatorpro.com';
   const canonicalUrl = `${origin}/#/${lang}/${page}`;
 
   const organization = {

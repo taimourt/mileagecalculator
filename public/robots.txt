@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mileagecalculator.pro/sitemap.xml
+User-agent: Mediapartners-Google
+Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://www.mileagecalculatorpro.com/sitemap.xml

@@ -35,6 +35,10 @@ export const TRANSLATIONS = {
       faqs: 'FAQs & Guide',
       sitemap: 'Language Index',
       authority: 'Knowledge Hub',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+      about: 'About Us',
+      contact: 'Contact Us',
     },
     common: {
       calculate: 'Calculate',

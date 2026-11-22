@@ -2,6 +2,8 @@ import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
 
 export default function SemanticBreadcrumbs({ currentLang = 'en', activeTab = 'route', onNavigate }) {
+  if (activeTab === 'route') return null;
+
   const tabNames = {
     route: 'Driving Route & Road Distance',
     measure: 'Measure Map Distance',

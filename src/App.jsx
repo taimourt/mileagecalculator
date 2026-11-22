@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import HomePage from './components/HomePage';
 import RouteDistanceCalculator from './components/RouteDistanceCalculator';
 import MapMeasureTool from './components/MapMeasureTool';
 import GasMileageCalculator from './components/GasMileageCalculator';
@@ -255,19 +256,31 @@ export default function App() {
       />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-12">
-        {/* Semantic Breadcrumbs with Schema.org Microdata */}
-        <SemanticBreadcrumbs
-          currentLang={currentLang}
-          activeTab={activeTab}
-          onNavigate={(lang, tab) => updateRoute(lang, tab)}
-        />
+        {/* Semantic Breadcrumbs & Navigation for Dedicated Subpages */}
+        {activeTab !== 'route' && (
+          <div className="mb-4 flex items-center justify-between gap-4 flex-wrap">
+            <SemanticBreadcrumbs
+              currentLang={currentLang}
+              activeTab={activeTab}
+              onNavigate={(lang, tab) => updateRoute(lang, tab)}
+            />
+            <button
+              type="button"
+              onClick={() => updateRoute(currentLang, 'route')}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition shrink-0"
+            >
+              <span>&larr; All Calculators (Home)</span>
+            </button>
+          </div>
+        )}
 
-        {/* Tab 1: Driving Route & Distance Calculator */}
+        {/* Complete Homepage (when on root or route tab) */}
         {activeTab === 'route' && (
-          <RouteDistanceCalculator
+          <HomePage
             unitSystem={unitSystem}
             currency={currency}
             onSendToTripCost={handleSendToTripCost}
+            onNavigateTab={(tab) => updateRoute(currentLang, tab)}
           />
         )}
 
